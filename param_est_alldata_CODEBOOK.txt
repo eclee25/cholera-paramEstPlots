@@ -1,0 +1,43 @@
+param_est_alldata.csv Codebook
+
+a) model_data: model that simulated data (1 = exponential, 2 = gamma, 3 = asymptomatic set 2, 4 = dose response, 5 = waning immunity)
+b) pois_data: poisson noise data (1 = poisson noisy, 0 = not poisson noisy)
+c) norm_data: normal noise data (1 = normal noisy, 0 = not normal noisy)
+d) model_fit: model that fit data (1 = exponential, 2 = gamma, 3 = asymptomatic set 2, 4 = dose response, 5 = waning immunity)
+e) epidemic: epidemic (100 days) or seasonal (10 years) data (1 = epidemic, 0 = seasonal)
+f) informed: informed or naive (20% difference from informed) starting parameters for beta_i, beta_w, alpha, xi, and k (1 = informed, 0 = naive)
+g) parameter: name of estimated or derived value (beta_i, beta_w, alpha, xi, k, aic)
+h) actual: original or actual parameter value based on simulated value (NAs for aic)
+j) estimate: parameter estimate or AIC value (-999999999 = -Inf)
+
+actual parameter values
+mu = 1/(55*365)
+beta_i = 0.25
+beta_w = 0.5
+gamma = 0.25
+xi = 0.01
+alpha = 1/365
+k = 1/50000
+
+***LOG***
+12/27/13: model4fit AICs need to be corrected but awaiting Michael to know what the correct AICs are; model3fit k needs to be corrected but awaiting Marisa for how to perform correction
+12/28/13: model4fit AICs were correct in the ForParameterEstimateTables... file; the model4AICs were updated in param_est_alldata.csv; all model3fit k values were multipled by 5 to correct for the symptomatic to asymptomatic ratio; data was exported and labelled as param_est_alldata.csv
+12/31/13: need to add 2*num_parameters to all AIC terms, data needs to be checked because the maximum x-axis values are different between plots where the values should be the same but simply color coded differently
+1/14/14: swapped alpha and xi labels for model 2 fits; added 14 (2 * num estimated parameters) to aic "estimates" for all model 3 fits; model 1 and model 3 seasonal poisson fit AICs were changed to prevent a -Inf value -- m1 informed fit of m2 data had imaginary numbers in AIC so value was left as -Inf
+1/29/14: Karen updated parameters and AIC M1 informed fit of M2 data for Poisson seasonal data
+2/18/14: noticed that the AIC values for some of the M1 and M3 fits had gotten corrupted, but since we are not using the AIC values for any of the plots right now, decided not to update them
+9/11/14: updated file with Michael's new m4 estimates
+10/1/15: remove seasonal and AIC estimates since those are no longer in the paper; update model 5 (waning immunity) estimates based on those from Brad "WaningImmunityParameterUpdates.xls"
+
+
+
+
+
+
+
+
+
+
+
+
+
