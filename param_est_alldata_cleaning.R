@@ -128,7 +128,8 @@ d3 <- d2 %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==3 & pois_data==1 & informed==0 & parameter=='xi'), 0.0254, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==3 & pois_data==1 & informed==0 & parameter=='k'), 3.90E-05, estimate))
   
-  
+# write to file
+write.csv(d3, 'param_est_alldata.csv', row.names=FALSE) # 10/1/15 @ 17:00
   
   
   
