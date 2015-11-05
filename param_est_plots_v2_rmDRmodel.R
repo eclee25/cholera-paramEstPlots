@@ -2,6 +2,7 @@
 ## Name: Elizabeth Lee
 ## Date: 10/1/15
 ## Function: Create violin plots for NimBIOS Cholera project parameter estimates -- by parameter, model, type of data -- as a function of percent deviation from the true parameters (cleaned up from v1)
+## Remove
 ## Filenames: param_est_alldata.csv
 ## Data Source: 
 ## Notes: 
@@ -10,31 +11,23 @@
 ## install.packages("pkg", dependencies=TRUE, lib="/usr/local/lib/R/site-library") # in sudo R
 ## update.packages(lib.loc = "/usr/local/lib/R/site-library")
 rm(list = ls())
+setwd(dirname(sys.frame(1)$ofile))
 
-systype <- Sys.info()[['sysname']]
-if (systype=="Windows"){
-  wdimport <- 'C:/Users/Elizabeth/Dropbox (Bansal Lab)/NIMBioS Project Cholera/param_est_plots'
-  wdexport <- 'C:/Users/Elizabeth/Dropbox (Bansal Lab)/NIMBioS Project Cholera/paper draft/figures/paramestplots'
-  wdsource <- 'C:/Users/Elizabeth/Dropbox (Bansal Lab)/code'
-}else if(systype=="Linux"){
-  wdimport <- '/home/elee/Dropbox/NIMBioS Project Cholera/param_est_plots'
-  wdexport <- '/home/elee/Dropbox/NIMBioS Project Cholera/paper draft/figures/paramestplots'
-  wdsource <- '/home/elee/Dropbox/code'
-}
+
+code <- '_rmDR'
 
 require(tidyr)
 require(dplyr)
 require(ggplot2)
 require(readr)
 
-##########################################
+#### import data ######################################
 
-setwd(wdimport)
 d <- read_csv('param_est_alldata.csv', col_types = 'iiiiiicddc', na = 'NA')
 d.Ang <- read.csv('param_est_Angola.csv', header=T)
 
 # folder for saving plots
-setwd(wdexport)
+setwd("../paper draft/figures/paramestplots")
 
 ##########################################
 ## data cleaning
@@ -67,9 +60,7 @@ d2$noisecode[which(d2$noise == '00')] <- 1 # non-noisy
 d2$noisecode[which(d2$noise == '10')] <- 2 # poisson
 d2$noisecode[which(d2$noise == '01')] <- 3 # normal
 
-###### 8/30/15: check data with tables in ms draft #####################################
-d2.check5a <- tbl_df(d2) %>% filter(model_data==1 & informed==1 & epidemic==1 & pois_data+norm_data==0)
-d2.check5b <- tbl_df(d2) %>% filter(model_data==4 & informed==1 & epidemic==1 & pois_data+norm_data==0)
+
 # there are some minor discrepancies, but it is not yet clear which is correct
 #### data processing: model_fit should be labeled with words ####################################
 # vs. fitting model
@@ -77,10 +68,13 @@ d3 <- d2 %>% mutate(model_fit2 = as.factor(ifelse(model_fit==1, 'Exponential', i
 # vs. data simulation model
 d4 <- d3 %>% mutate(model_data2 = as.factor(ifelse(model_data==1, 'Exponential', ifelse(model_data==2, 'Gamma', ifelse(model_data==3, 'Asymptomatic', ifelse(model_data==4, 'Dose Response', ifelse(model_data==5, 'Waning Immunity', NA))))))) %>% mutate(model_data2 = factor(model_data2, levels(model_data2)[c(3, 2, 1, 4, 5)]))
 # vs. noise
-d5 <- d4 %>% mutate(noisecode2 = as.factor(ifelse(noisecode==1, 'None', ifelse(noisecode==2, "Poisson", ifelse(noisecode==3, "Normal", NA))))) %>% mutate(noisecode2 = factor(noisecode2, levels(noisecode2)[c(1, 3, 2)])) %>% mutate(modChoiceID = paste0(model_data, pois_data, norm_data, model_fit, epidemic, informed))
+#### 11/4/15: remove dose response model ##########################################
+d5 <- d4 %>% mutate(noisecode2 = as.factor(ifelse(noisecode==1, 'None', ifelse(noisecode==2, "Poisson", ifelse(noisecode==3, "Normal", NA))))) %>% mutate(noisecode2 = factor(noisecode2, levels(noisecode2)[c(1, 3, 2)])) %>% mutate(modChoiceID = paste0(model_data, pois_data, norm_data, model_fit, epidemic, informed)) %>% 
+  filter(model_data != 4 & model_fit != 4)
 
 #### 10/17/15: labeller expressions for parameters ##########################################
-d6 <- d5  %>% mutate(param_expr = ifelse(parameter == "beta_i", "beta[I]", ifelse(parameter == "beta_w", "beta[W]", as.character(parameter)))) %>% mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k")))
+d6 <- d5  %>% 
+  mutate(param_expr = ifelse(parameter == "beta_i", "beta[I]", ifelse(parameter == "beta_w", "beta[W]", as.character(parameter)))) %>% mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k"))) 
 
 #### 8/30/15: generate summaries for simulated data ##########################################
 #1) Compare summaries across parameters
@@ -95,7 +89,6 @@ k_M2 <- d5 %>% filter(parameter == 'k' & model_fit == 2)
 k_M5 <- d5 %>% filter(parameter =='k' & model_fit == 5)
 
 ## 10/1/15 ##
-setwd(wdexport)
 # write.csv(param.summ, 'estimate_summary_by_parameters.csv', row.names=F)
 # write.csv(fitmodel.summ, 'estimate_summary_by_fittingmodel.csv', row.names=F)
 # write.csv(param_fitmodel.summ, 'estimate_summary_by_parameters_and_fittingmodel.csv', row.names=F)
@@ -105,7 +98,6 @@ setwd(wdexport)
 param.summ.Ang <- d.Ang %>% filter(parameter != "AIC") %>% group_by(parameter) %>% summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3))
 
 ## 10/1/15 ##
-setwd(wdexport)
 # write.csv(param.summ.Ang, 'estimate_summary_Angola_by_parameters.csv', row.names=F)
 
 
@@ -116,10 +108,9 @@ text.ylab <- "absolute value of deviation from true parameter"
 text.ylab2 <- "percent deviation from true parameter"
 text.ylab3 <- "percentage of estimate relative to true parameter"
 text.xlab <- "fitting model"
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
+model.colors <- c('#00FF00', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
 w <- 9; h <- 8
 lt <- 2 # line type
-setwd(wdexport)
 
 ####### plot beta_w vs xi estimates ######################################################
 # 10/16/15: Practical identifiability trade-offs between betaW and xi
@@ -133,7 +124,7 @@ identif.plot <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   ylab(expression(paste(xi, " estimate"))) +
   xlab(expression(paste(beta[W], " estimate"))) 
 print(identif.plot)
-ggsave("betaW_xi_scatter.pdf", identif.plot, width=w, height=h)
+ggsave(sprintf("betaW_xi_scatter%s.pdf", code), identif.plot, width=w, height=h)
 
 identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
@@ -144,7 +135,7 @@ identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   xlab(expression(paste(beta[W], " estimate"))) +
   coord_cartesian(xlim = c(0, 2.5), ylim = c(0, 0.1))
 print(identif.plot.zm)
-ggsave("betaW_xi_scatterZm.pdf", identif.plot.zm, width=w, height=h)
+ggsave(sprintf("betaW_xi_scatterZm.pdf", code), identif.plot.zm, width=w, height=h)
 
 ###########################################################################
 ### group by parameter, fitting model as colors #########################################
@@ -178,7 +169,7 @@ param.plot2 <- ggplot(d6, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) 
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~param_expr, labeller = label_parsed)
 print(param.plot2)
-ggsave("percTrueDev_byParam_colModelfit.pdf", param.plot2, width=w, height=h)
+ggsave(sprintf("percTrueDev_byParam_colModelfit%s.pdf", code), param.plot2, width=w, height=h)
 
 
 # # ratio of estimate to actual
@@ -227,7 +218,8 @@ simdata.plot2 <- ggplot(d6, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)
   ggtitle('data simulation model') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~model_data2)
-ggsave("percTrueDev_byModeldata_colModelfit.pdf", simdata.plot2, width=w, height=h)
+print(simdata.plot2)
+ggsave(sprintf("percTrueDev_byModeldata_colModelfit%s.pdf", code), simdata.plot2, width=w, height=h)
 
 # simdata.plot3 <- ggplot(d5, aes(x=model_fit2, y=dev_ratio, group=model_fit2)) + 
 #   geom_violin(aes(fill=model_fit2), position="dodge", trim=TRUE) +
@@ -274,7 +266,8 @@ noise.plot2 <- ggplot(d5, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) 
   ggtitle('noise added to simulated data') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~noisecode2)
-ggsave("percTrueDev_byNoise_colModelfit.pdf", noise.plot2, width=w, height=h)
+print(noise.plot2)
+ggsave(sprintf("percTrueDev_byNoise_colModelfit%s.pdf", code), noise.plot2, width=w, height=h)
 
 # noise.plot3 <- ggplot(d5, aes(x=model_fit2, y=dev_ratio, group=model_fit2)) + 
 #   geom_violin(aes(fill=model_fit2), position="dodge", trim=TRUE) +

@@ -28,7 +28,7 @@ k = 1/50000
 2/18/14: noticed that the AIC values for some of the M1 and M3 fits had gotten corrupted, but since we are not using the AIC values for any of the plots right now, decided not to update them
 9/11/14: updated file with Michael's new m4 estimates
 10/1/15: remove seasonal and AIC estimates since those are no longer in the paper; update model 5 (waning immunity) estimates based on those from Brad "WaningImmunityParameterUpdates.xls"
-
+10/2/15: fix error with fit model 5, data model 4, poisson, informed, estimate for k (no change)
 
 
 

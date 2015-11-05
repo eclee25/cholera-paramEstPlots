@@ -108,7 +108,7 @@ d2 <- d.og %>% filter(epidemic==1 & parameter !='aic')
 d2$parameter <- gsub('.AF8-', '_', d2$parameter) # . matches 1 character
 d2$estimate <- gsub('.AC0', '', d2$estimate)
 d2$uqid <- gsub('.AF8-', '_', d2$uqid)
-# 17 changes to epidemic data outlined in WaningImmunityParameterUpdates.xlsx
+# 16 changes to epidemic data outlined in WaningImmunityParameterUpdates.xlsx
 d3 <- d2 %>% 
   mutate(estimate = ifelse((model_fit==5 & model_data==5 & norm_data==1 & informed==0 & parameter=='alpha'), 0.002, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==1 & pois_data==1 & informed==1 & parameter=='alpha'), 0.002, estimate)) %>%
@@ -116,7 +116,6 @@ d3 <- d2 %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==4 & pois_data==1 & informed==1 & parameter=='beta_w'), 8.9934, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==4 & pois_data==1 & informed==1 & parameter=='alpha'), 0.0253, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==4 & pois_data==1 & informed==1 & parameter=='xi'), 0.0013, estimate)) %>%
-  mutate(estimate = ifelse((model_fit==5 & model_data==4 & pois_data==1 & informed==1 & parameter=='k'), 0.2508, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==3 & pois_data==1 & informed==1 & parameter=='beta_i'), 0.2556, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==3 & pois_data==1 & informed==1 & parameter=='beta_w'), 0.603, estimate)) %>%
   mutate(estimate = ifelse((model_fit==5 & model_data==3 & pois_data==1 & informed==1 & parameter=='alpha'), 0.0037, estimate)) %>%
