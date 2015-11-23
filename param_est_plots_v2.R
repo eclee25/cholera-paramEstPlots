@@ -146,22 +146,33 @@ identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
 print(identif.plot.zm)
 ggsave("betaW_xi_scatterZm.pdf", identif.plot.zm, width=w, height=h)
 
+identif.plot.nonoise <- ggplot(identif_bw_xi %>% filter(substring(modChoiceID, 2, 3) == "00"), aes(x = beta_w, y = xi)) +
+  geom_point(aes(color = model_fit2), size = 3) + 
+  scale_colour_manual(values=model.colors, name='fitting model') +
+  theme_bw(base_size = 18, base_family = "") +
+  theme(panel.background = element_blank(), legend.position = "bottom", legend.key = element_rect(colour = 'black')) +
+  ylab(expression(paste(xi, " estimate"))) +
+  xlab(expression(paste(beta[W], " estimate"))) 
+print(identif.plot.nonoise)
+ggsave("betaW_xi_scatter_nonoise.pdf", identif.plot.nonoise, width=w, height=h)
+
+
 ###########################################################################
 ### group by parameter, fitting model as colors #########################################
-# # log percent deviation
-# param.plot <- ggplot(d5, aes(x=model_fit2, y=perc_dev, group=model_fit2)) + 
-#   geom_violin(aes(fill=model_fit2), position="dodge", trim=TRUE) +
-#   scale_fill_manual(values=model.colors, name='') +
-#   scale_y_log10(breaks=ybreaks, labels=ylabels) + 
-#   stat_summary(aes(group=model_fit2), fun.y=median, geom="point", colour = 'black', size=3) +
-#   theme_bw(base_size=18) +
-#   theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), axis.text.x = element_blank()) +
-#   guides(fill = guide_legend(override.aes = list(colour = NA))) + 
-#   ylab(text.ylab) +
-#   xlab(text.xlab) +
-#   ggtitle('parameter') +
-#   facet_grid(~parameter)
-# ggsave("logPercDev_byParam_colModelfit.pdf", param.plot, width=w, height=h)
+# log percent deviation
+param.plot <- ggplot(d5, aes(x=model_fit2, y=perc_dev, group=model_fit2)) + 
+  geom_violin(aes(fill=model_fit2), position="dodge", trim=TRUE) +
+  scale_fill_manual(values=model.colors, name='') +
+  scale_y_log10(breaks=ybreaks, labels=ylabels) + 
+  stat_summary(aes(group=model_fit2), fun.y=median, geom="point", colour = 'black', size=3) +
+  theme_bw(base_size=18) +
+  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), axis.text.x = element_blank()) +
+  guides(fill = guide_legend(override.aes = list(colour = NA))) + 
+  ylab(text.ylab) +
+  xlab(text.xlab) +
+  ggtitle('parameter') +
+  facet_grid(~parameter, labeller = label_parsed)
+ggsave("logPercDev_byParam_colModelfit.pdf", param.plot, width=w, height=h)
 
 # true deviation
 param.plot2 <- ggplot(d6, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) + 
