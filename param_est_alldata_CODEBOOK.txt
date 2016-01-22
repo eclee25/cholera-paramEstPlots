@@ -1,10 +1,10 @@
-param_est_alldata.csv Codebook
+param_est_alldata_epi.csv Codebook
 
 a) model_data: model that simulated data (1 = exponential, 2 = gamma, 3 = asymptomatic set 2, 4 = dose response, 5 = waning immunity)
 b) pois_data: poisson noise data (1 = poisson noisy, 0 = not poisson noisy)
 c) norm_data: normal noise data (1 = normal noisy, 0 = not normal noisy)
 d) model_fit: model that fit data (1 = exponential, 2 = gamma, 3 = asymptomatic set 2, 4 = dose response, 5 = waning immunity)
-e) epidemic: epidemic (100 days) or seasonal (10 years) data (1 = epidemic, 0 = seasonal)
+e) epidemic: epidemic (100 days) or seasonal (10 years) data or multi-peak epidemic (3 years) (1 = epidemic, 0 = seasonal, 2 = multi-peak epidemic)
 f) informed: informed or naive (20% difference from informed) starting parameters for beta_i, beta_w, alpha, xi, and k (1 = informed, 0 = naive)
 g) parameter: name of estimated or derived value (beta_i, beta_w, alpha, xi, k, aic)
 h) actual: original or actual parameter value based on simulated value (NAs for aic)
@@ -29,7 +29,7 @@ k = 1/50000
 9/11/14: updated file with Michael's new m4 estimates
 10/1/15: remove seasonal and AIC estimates since those are no longer in the paper; update model 5 (waning immunity) estimates based on those from Brad "WaningImmunityParameterUpdates.xls"
 10/2/15: fix error with fit model 5, data model 4, poisson, informed, estimate for k (no change)
-
+1/21/16: Divide alpha estimates by 81 for Gamma and Waning fitting model estimates (param_est_alldata & param_est_Angola). Import parameter estimates for 3 year data and convert to similar format. Add new code (multi-peak epidemic; epidemic = 2) for epidemic variable. Export new files with DIFFERENT FILE NAMING CONVENTION: "param_est_100d_3y.csv" & "param_est_Angola.csv" and new parameter estimate summaries. Cleaning program: "param_est_100d_3y_cleaning.R". Plotting program: param_est_plots_100d_3y.R, param_e
 
 
 
