@@ -31,7 +31,9 @@ lt <- 2 # line type
 setwd("../paper draft/figures/betawXiplots")
 
 # 10/16/15: Practical identifiability trade-offs between betaW and xi
-identif_bw_xi <- d5 %>% filter(parameter == 'beta_w' | parameter == 'xi') %>% select(modChoiceID, model_fit2, parameter, estimate) %>% spread(parameter, estimate)
+identif_bw_xi <- d5 %>% filter(parameter == 'beta_w' | parameter == 'xi') %>% 
+  select(modChoiceID, model_fit2, parameter, estimate) %>% 
+  spread(parameter, estimate)
 
 identif.plot <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
@@ -65,4 +67,7 @@ identif.plot.nonoise <- ggplot(identif_bw_xi %>% filter(substring(modChoiceID, 2
   coord_cartesian(xlim = c(0, 5), ylim = c(0, 0.1))
 print(identif.plot.nonoise)
 ggsave("betaW_xi_scatter_nonoise.pdf", identif.plot.nonoise, width=w, height=h)
+
+# 1/26/16 incomplete
+# duplicate uqids between nonoise_informed and nonoise_naive
 

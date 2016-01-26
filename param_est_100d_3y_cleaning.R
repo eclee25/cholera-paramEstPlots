@@ -112,11 +112,12 @@ write.csv(param.summ, 'estimate_summary_by_parameters.csv', row.names=F)
 write.csv(fitmodel.summ, 'estimate_summary_by_fittingmodel.csv', row.names=F)
 write.csv(param_fitmodel.summ, 'estimate_summary_by_parameters_and_fittingmodel.csv', row.names=F)
 write.csv(param.summ.Ang, 'estimate_summary_Angola_by_parameters.csv', row.names=F)
-# 1/21/16, 10:01 pm
+# 1/26/16 incomplete
 
 #### export cleaned 100d_3y data ################################
 setwd("../")
 write_csv(d.Ang.cl, "param_est_Angola.csv")
 write_csv(d6, "param_est_100d_3y.csv") 
-# 1/21/16, 10:01 pm
+# 1/26/16, incomplete
+# Duplicate uqids between nonoise_naive and nonoise_informed datasets
 

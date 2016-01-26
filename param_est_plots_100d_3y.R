@@ -22,14 +22,15 @@ require(readr)
 ###### set this! ####################################
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
-setEpicode <- 2
-# 1/21/16 10:32 pm
+setEpicode <- 1
+# 1/26/16 4:38 pm
 
 ###### import data ####################################
 d <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
   mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k"))) %>%
   mutate(noisecode2 = factor(noisecode2, levels = c("None", "Poisson", "Normal"))) %>% 
-  mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
+  mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity"))) %>% 
+  mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
 
 #### plotting params #############################################
 ylabels <- paste0(c(0.001, 0.01, 0.1, 1, 10, 100, 1000), "%")

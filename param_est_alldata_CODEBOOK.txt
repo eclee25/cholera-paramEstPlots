@@ -30,7 +30,7 @@ k = 1/50000
 10/1/15: remove seasonal and AIC estimates since those are no longer in the paper; update model 5 (waning immunity) estimates based on those from Brad "WaningImmunityParameterUpdates.xls"
 10/2/15: fix error with fit model 5, data model 4, poisson, informed, estimate for k (no change)
 1/21/16: Divide alpha estimates by 81 for Gamma and Waning fitting model estimates (param_est_alldata & param_est_Angola). Import parameter estimates for 3 year data and convert to similar format. Add new code (multi-peak epidemic; epidemic = 2) for epidemic variable. Export new files with DIFFERENT FILE NAMING CONVENTION: "param_est_100d_3y.csv" & "param_est_Angola.csv" and new parameter estimate summaries. Cleaning program: "param_est_100d_3y_cleaning.R". Plotting program: param_est_plots_100d_3y.R, param_e
-
+1/26/16: Replace 3 year parameter estimate data with new copies from Marisa. The new data set the model tolerance to 1 when the Gamma model is fitting to Exponential model data.
 
 
 
