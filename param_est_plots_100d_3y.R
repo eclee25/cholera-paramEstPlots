@@ -22,8 +22,8 @@ require(readr)
 ###### set this! ####################################
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
-setEpicode <- 1
-# 1/26/16 4:38 pm
+setEpicode <- 2
+# 1/26/16 9:51 pm
 
 ###### import data ####################################
 d <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 

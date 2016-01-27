@@ -12,7 +12,7 @@
 
 #### header #################################
 rm(list = ls())
-require(dplyr); require(tidyr); require(ggplot2)
+require(dplyr); require(tidyr); require(ggplot2); require(readr)
 
 setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
 
@@ -112,12 +112,11 @@ write.csv(param.summ, 'estimate_summary_by_parameters.csv', row.names=F)
 write.csv(fitmodel.summ, 'estimate_summary_by_fittingmodel.csv', row.names=F)
 write.csv(param_fitmodel.summ, 'estimate_summary_by_parameters_and_fittingmodel.csv', row.names=F)
 write.csv(param.summ.Ang, 'estimate_summary_Angola_by_parameters.csv', row.names=F)
-# 1/26/16 incomplete
+# 1/26/16, 9:50 pm
 
 #### export cleaned 100d_3y data ################################
 setwd("../")
 write_csv(d.Ang.cl, "param_est_Angola.csv")
 write_csv(d6, "param_est_100d_3y.csv") 
-# 1/26/16, incomplete
-# Duplicate uqids between nonoise_naive and nonoise_informed datasets
+# 1/26/16, 9:50 pm
 

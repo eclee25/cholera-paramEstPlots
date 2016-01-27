@@ -68,6 +68,4 @@ identif.plot.nonoise <- ggplot(identif_bw_xi %>% filter(substring(modChoiceID, 2
 print(identif.plot.nonoise)
 ggsave("betaW_xi_scatter_nonoise.pdf", identif.plot.nonoise, width=w, height=h)
 
-# 1/26/16 incomplete
-# duplicate uqids between nonoise_informed and nonoise_naive
-
+# 1/26/16, 9:58 pm
