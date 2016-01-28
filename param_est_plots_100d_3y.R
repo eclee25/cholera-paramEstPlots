@@ -22,7 +22,7 @@ require(readr)
 ###### set this! ####################################
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
-setEpicode <- 2
+setEpicode <- 1
 # 1/26/16 9:51 pm
 
 ###### import data ####################################
