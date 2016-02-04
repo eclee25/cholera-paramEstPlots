@@ -54,7 +54,7 @@ identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   theme_bw(base_size = 16, base_family = "") +
   theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), panel.background = element_blank()) +
   ylab(expression(paste(xi, " estimate"))) +
-  xlab(expression(paste(beta[W], " estimate"))) #+
+  xlab(expression(paste(beta[W], " estimate"))) +
   coord_cartesian(xlim = c(0, 2.5), ylim = c(0, 0.1))
 print(identif.plot.zm)
 ggsave("betaW_xi_scatterZm.pdf", identif.plot.zm, width=w, height=h)
