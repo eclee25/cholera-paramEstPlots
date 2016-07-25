@@ -23,7 +23,7 @@ require(readr)
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
 setEpicode <- 1
-# 1/26/16 9:51 pm
+# 4/18/16 11:12 pm
 
 ###### import data ####################################
 d <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
@@ -70,7 +70,7 @@ param.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)
   scale_fill_manual(values=model.colors, name='') +
   geom_hline(yintercept = c(-20, 20), colour = 'black', linetype = lt) +
   stat_summary(aes(group=model_fit2), fun.y=median, geom="point", colour = 'black', size=3) +
-  theme_bw(base_size=18) +
+  theme_bw(base_size=19) +
   theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), axis.text.x = element_blank()) +
   guides(fill = guide_legend(override.aes = list(colour = NA))) + 
   ylab(text.ylab2) +

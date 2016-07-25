@@ -50,8 +50,8 @@ ggsave("betaW_xi_scatter.pdf", identif.plot, width=w, height=h)
 
 identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
-  scale_colour_manual(values=model.colors, name='fitting model') +
-  theme_bw(base_size = 16, base_family = "") +
+  scale_colour_manual(values=model.colors, name='fitting') +
+  theme_bw(base_size = 18, base_family = "") +
   theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), panel.background = element_blank()) +
   ylab(expression(paste(xi, " estimate"))) +
   xlab(expression(paste(beta[W], " estimate"))) +
