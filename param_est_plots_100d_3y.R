@@ -22,7 +22,8 @@ require(readr)
 ###### set this! ####################################
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
-setEpicode <- 1
+setEpicode <- 2
+ext <- "png"
 # 4/18/16 11:12 pm
 
 ###### import data ####################################
@@ -64,7 +65,7 @@ param.plot <- ggplot(epiD, aes(x=model_fit2, y=perc_dev, group=model_fit2)) +
   xlab(text.xlab) +
   ggtitle('parameter') +
   facet_grid(~param_expr, labeller = label_parsed)
-ggsave(sprintf("logPercDev_byParam%s.pdf", code1), param.plot, width=w, height=h)
+ggsave(sprintf("logPercDev_byParam%s.%s", code1, ext), param.plot, width=w, height=h)
 
 # true deviation
 param.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) + 
@@ -81,7 +82,7 @@ param.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~param_expr, labeller = label_parsed)
 print(param.plot2)
-ggsave(sprintf("percTrueDev_byParam%s.pdf", code1), param.plot2, width=w, height=h)
+ggsave(sprintf("percTrueDev_byParam%s.%s", code1, ext), param.plot2, width=w, height=h)
 
 ### group by simulating model, fitting model as colors #########################################
 simdata.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) + 
@@ -97,7 +98,7 @@ simdata.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit
   ggtitle('data simulation model') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~model_data2)
-ggsave(sprintf("percTrueDev_byModeldata%s.pdf", code1), simdata.plot2, width=w, height=h)
+ggsave(sprintf("percTrueDev_byModeldata%s.%s", code1, ext), simdata.plot2, width=w, height=h)
 
 ### group by noise, fitting model as colors #########################################
 noise.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)) + 
@@ -113,4 +114,4 @@ noise.plot2 <- ggplot(epiD, aes(x=model_fit2, y=perc_dev_true, group=model_fit2)
   ggtitle('noise added to simulated data') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~noisecode2)
-ggsave(sprintf("percTrueDev_byNoise%s.pdf", code1), noise.plot2, width=w, height=h)
+ggsave(sprintf("percTrueDev_byNoise%s.%s", code1, ext), noise.plot2, width=w, height=h)

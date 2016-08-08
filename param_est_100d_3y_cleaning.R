@@ -42,9 +42,7 @@ for (i in 1:length(fnames_epi)){
   epi.cl <- cleanData(dummyfile, epi.cl)
 }
 ## 8/8/16 ## 
-# Do we still need to correct the alpha estimates for the gamma & waning models? 
-epi.cl <- epi.cl %>% 
-  mutate(estimate = ifelse((model_fit %in% c(2, 5) & parameter == 'alpha'), estimate/81, estimate))
+# Do we still need to correct the alpha estimates for the gamma & waning models? NO!
 
 #### import & clean 3y data ################################
 setwd("../fits3yr_paramEst")
