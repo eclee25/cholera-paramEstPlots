@@ -4,7 +4,7 @@
 ## Function: Create scatterplots of betaW and Xi across all model fits to see if there are identifiability tradeoffs
 ## Filenames: param_est_alldata_100d_3y.csv
 ## Data Source: 
-## Notes: 
+## Notes: 8/8/16 - update file paths for restructured directories
 ## 
 ## useful commands:
 ## install.packages("pkg", dependencies=TRUE, lib="/usr/local/lib/R/site-library") # in sudo R
@@ -20,6 +20,7 @@ require(ggplot2)
 require(readr)
 
 ##########################################
+setwd("./JTB_submission2_data")
 d5 <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
   mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
 
@@ -31,7 +32,7 @@ w <- 9; h <- 8
 lt <- 2 # line type
 
 ####### plot beta_w vs xi estimates (100d & 3y) ######################################################
-setwd("../paper draft/figures/betawXiplots")
+setwd("../figures")
 
 # 10/16/15: Practical identifiability trade-offs between betaW and xi
 identif_bw_xi <- d5 %>% filter(parameter == 'beta_w' | parameter == 'xi') %>% 
@@ -87,4 +88,4 @@ identif.plot.rmDR <- ggplot(identif_bw_xi_rmDR, aes(x = beta_w, y = xi)) +
 print(identif.plot.rmDR)
 ggsave("betaW_xi_scatter_rmDR.pdf", identif.plot.rmDR, width=w, height=h)
 
-# 1/28/16, 10:14 am
+# 8/8/16

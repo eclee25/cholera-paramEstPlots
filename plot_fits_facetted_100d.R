@@ -2,7 +2,7 @@
 ## Name: Elizabeth Lee
 ## Date: 11/22/15
 ## Function: plot 100 day fits in ggplot; rows represent fitting model, columns represent noise type, separate plots for informed and naive starting parameters
-## Filenames: all_100d_data.csv
+## Filenames: trajectory_fits_100d.csv
 ## Data Source: 
 ## Notes: 
 ## 
@@ -33,9 +33,8 @@ xlabel.big <- "added noise"
 xlabel.sm <- "Time (days)"
 
 #### import data ################################
-imported <- read_csv("all_100d_data.csv", col_types = "ccccid") %>%
-  mutate(generating_model = ifelse(generating_model == "Gamma Chain", "Gamma", generating_model)) %>%
-  mutate(fitting_model = ifelse(fitting_model == "Gamma Chain", "Gamma", fitting_model)) 
+setwd("./JTB_submission2_data")
+imported <- read_csv("trajectory_fits_100d.csv", col_types = "ccccid") 
 
 #### clean data ################################
 fitD <- imported %>%
@@ -52,7 +51,8 @@ fullD <- full_join(fitD, trueD, by = c("generating_model", "noise", "starting", 
   mutate(starting = factor(starting, levels = starting.order))
 
 #### plot preparation ################################
-setwd("../../../../paper draft/figures/modelcomparisonplots")
+setwd(dirname(sys.frame(1)$ofile))
+setwd("./figures")
 
 #### plotting ################################
 pltFunc <- function(dataset){
@@ -78,7 +78,8 @@ for (starts in starting.order) {
   fitP.Ns <- pltFunc(fullD %>% filter(starting == starts & noise != "poisson"))
   ggsave(sprintf("allFits_100d_%sStarting.pdf", starts), fitP.full, width = w, height = h, dpi = dp)
   ggsave(sprintf("noneNormFits_100d_%sStarting.pdf", starts), fitP.Ns, width = w, height = h, dpi = dp)
-} # 11/22/15
+} 
+# exported 8/8/16
 
 
 
