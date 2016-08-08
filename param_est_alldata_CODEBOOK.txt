@@ -32,7 +32,7 @@ k = 1/50000
 1/21/16: Divide alpha estimates by 81 for Gamma and Waning fitting model estimates (param_est_alldata & param_est_Angola). Import parameter estimates for 3 year data and convert to similar format. Add new code (multi-peak epidemic; epidemic = 2) for epidemic variable. Export new files with DIFFERENT FILE NAMING CONVENTION: "param_est_100d_3y.csv" & "param_est_Angola.csv" and new parameter estimate summaries. Cleaning program: "param_est_100d_3y_cleaning.R". Plotting program: param_est_plots_100d_3y.R, param_e
 1/26/16: Replace 3 year parameter estimate data with new copies from Marisa. The new data set the model tolerance to 1 when the Gamma model is fitting to Exponential model data. Still, there were errors found -- nonoise_naive and nonoise_informed both have informed = 1 in the generated data. Figures not replotted. See email subject: "cholera hangout notes - 1/22/16".
 1/27/16: New param_est_100d_3y.csv generated. Figures replotted.
-
+8/8/16: Models rerun by Marisa and organized in to folders (JTB_submission2_data/). New derived data generated in that same folder.
 
 
 

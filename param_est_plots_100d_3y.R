@@ -4,7 +4,7 @@
 ## Function: Create violin plots for NimBIOS Cholera project parameter estimates -- by parameter, model, type of data -- as a function of percent deviation from the true parameters (cleaned up from v1)
 ## Filenames: param_est_alldata_100d_3y.csv
 ## Data Source: 
-## Notes: 
+## Notes: 8/8/16 - add R0 panel to figure, new directory structure
 ## 
 ## useful commands:
 ## install.packages("pkg", dependencies=TRUE, lib="/usr/local/lib/R/site-library") # in sudo R
@@ -26,8 +26,9 @@ setEpicode <- 1
 # 4/18/16 11:12 pm
 
 ###### import data ####################################
+setwd("./JTB_submission2_data")
 d <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
-  mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k"))) %>%
+  mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k", "R[0]"))) %>%
   mutate(noisecode2 = factor(noisecode2, levels = c("None", "Poisson", "Normal"))) %>% 
   mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity"))) %>% 
   mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
@@ -44,7 +45,8 @@ w <- 9; h <- 8
 lt <- 2 # line type
 
 ####### save figures ####################################################################
-setwd("../paper draft/figures/paramestplots")
+setwd(dirname(sys.frame(1)$ofile)) 
+setwd("./figures")
 epiD <- d %>% filter(epidemic == setEpicode)
 code1 <- sprintf("_epi%s", setEpicode)
   
