@@ -5,6 +5,7 @@
 ## Filenames: param_est_alldata_21_01_16.csv
 ## Data Source: 
 ## Notes: See cholera hangout notes 1/13/16; ME email subject: cholera hangout notes - 1/13/16
+## 8/8/16: edits for JTB_submission2_data
 ## 
 ## useful commands:
 ## install.packages("pkg", dependencies=TRUE, lib="/usr/local/lib/R/site-library") # in sudo R
@@ -16,6 +17,13 @@ require(dplyr); require(tidyr); require(ggplot2); require(readr)
 
 setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
 
+#### functions #################################
+cleanData <- function(filename, dataframe){
+  dummyD <- read_csv(filename, col_types = "iiiiiicddc")
+  newdataframe <- bind_rows(dataframe, dummyD)
+  return(newdataframe)
+}
+
 #### import & clean Angola data ##########################################
 setwd("./Angola_param_est_archive")
 d.Ang <- read_csv("param_est_Angola_21_01_16.csv", col_types = "cicicd")
@@ -24,24 +32,27 @@ d.Ang.cl <- d.Ang %>%
 param.summ.Ang <- d.Ang.cl %>% filter(parameter != "AIC") %>% group_by(parameter) %>% summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3))
 
 #### import & clean 100d data ################################
-setwd("../100d_param_est_archive")
-epi.orig <- read_csv("param_est_alldata_21_01_16.csv", col_types = "iiiiiicddc")
-epi.cl <- epi.orig %>% 
+setwd(dirname(sys.frame(1)$ofile))
+setwd("./JTB_submission2_data/fits100day_paramEst")
+fnames_epi <- list.files() # grab list of file names
+epi.cl <- data.frame() # create empty data frame
+
+for (i in 1:length(fnames_epi)){
+  dummyfile <- fnames_epi[i]
+  epi.cl <- cleanData(dummyfile, epi.cl)
+}
+## 8/8/16 ## 
+# Do we still need to correct the alpha estimates for the gamma & waning models? 
+epi.cl <- epi.cl %>% 
   mutate(estimate = ifelse((model_fit %in% c(2, 5) & parameter == 'alpha'), estimate/81, estimate))
 
 #### import & clean 3y data ################################
-setwd("../3y_param_est_orig/")
-fnames <- list.files() # grab list of file names
-seas.cl <- data.frame() # create empty data frame
+setwd("../fits3yr_paramEst")
+fnames_seas <- list.files() 
+seas.cl <- data.frame() 
 
-cleanData <- function(filename, dataframe){
-  dummyD <- read_csv(filename, col_types = "iiiiiicddc")
-  newdataframe <- bind_rows(dataframe, dummyD)
-  return(newdataframe)
-}
-
-for (i in 1:length(fnames)){
-  dummyfile <- fnames[i]
+for (i in 1:length(fnames_seas)){
+  dummyfile <- fnames_seas[i]
   seas.cl <- cleanData(dummyfile, seas.cl)
 }
 
@@ -61,13 +72,14 @@ d$perc_dev_true <- (d$estimate - d$actual)/d$actual * 100
 d$dev_ratio <- d$estimate/d$actual * 100
 
 # create numeric codes for each parameter
-# 1 = beta_i, 2 = beta_w, 3 = alpha, 4 = xi, 5 = k
+# 1 = beta_i, 2 = beta_w, 3 = alpha, 4 = xi, 5 = k, 6 = R0
 d$param_code <- 0
 d[d$parameter == 'beta_i',]$param_code <- 1
 d[d$parameter == 'beta_w',]$param_code <- 2
 d[d$parameter == 'alpha',]$param_code <- 3
 d[d$parameter == 'xi',]$param_code <- 4
 d[d$parameter == 'k',]$param_code <- 5
+d[d$parameter == 'R_0',]$param_code <- 6
 
 d2 <- tbl_df(d) 
 
@@ -78,45 +90,68 @@ d2$noisecode[which(d2$noise == '00')] <- 1 # non-noisy
 d2$noisecode[which(d2$noise == '10')] <- 2 # poisson
 d2$noisecode[which(d2$noise == '01')] <- 3 # normal
 
-###### 8/30/15: check data with tables in ms draft #####################################
-d2.check5a <- tbl_df(d2) %>% filter(model_data==1 & informed==1 & epidemic==1 & pois_data+norm_data==0)
-d2.check5b <- tbl_df(d2) %>% filter(model_data==4 & informed==1 & epidemic==1 & pois_data+norm_data==0)
-# there are some minor discrepancies, but it is not yet clear which is correct
+# ###### 8/30/15: check data with tables in ms draft #####################################
+# d2.check5a <- tbl_df(d2) %>% filter(model_data==1 & informed==1 & epidemic==1 & pois_data+norm_data==0)
+# d2.check5b <- tbl_df(d2) %>% filter(model_data==4 & informed==1 & epidemic==1 & pois_data+norm_data==0)
 
-#### data processing: model_fit should be labeled with words ####################################
+#### data processing: model numbers should be labeled with words ####################################
 # vs. fitting model
-d3 <- d2 %>% mutate(model_fit2 = as.factor(ifelse(model_fit==1, 'Exponential', ifelse(model_fit==2, 'Gamma', ifelse(model_fit==3, 'Asymptomatic', ifelse(model_fit==4, 'Dose Response', ifelse(model_fit==5, 'Waning Immunity', NA))))))) %>% mutate(model_fit2 = factor(model_fit2, levels(model_fit2)[c(3, 2, 1, 4, 5)])) %>% mutate(parameter = factor(parameter, c("beta_i", "beta_w", "alpha", "xi", "k"))) 
+d3 <- d2 %>% 
+  mutate(model_fit2 = as.factor(ifelse(model_fit==1, 'Exponential', ifelse(model_fit==2, 'Gamma', ifelse(model_fit==3, 'Asymptomatic', ifelse(model_fit==4, 'Dose Response', ifelse(model_fit==5, 'Waning Immunity', NA))))))) %>% 
+  mutate(model_fit2 = factor(model_fit2, levels(model_fit2)[c(3, 2, 1, 4, 5)])) %>% 
+  mutate(parameter = factor(parameter, c("beta_i", "beta_w", "alpha", "xi", "k", "R_0"))) 
 # vs. data simulation model
-d4 <- d3 %>% mutate(model_data2 = as.factor(ifelse(model_data==1, 'Exponential', ifelse(model_data==2, 'Gamma', ifelse(model_data==3, 'Asymptomatic', ifelse(model_data==4, 'Dose Response', ifelse(model_data==5, 'Waning Immunity', NA))))))) %>% mutate(model_data2 = factor(model_data2, levels(model_data2)[c(3, 2, 1, 4, 5)]))
+d4 <- d3 %>% 
+  mutate(model_data2 = as.factor(ifelse(model_data==1, 'Exponential', ifelse(model_data==2, 'Gamma', ifelse(model_data==3, 'Asymptomatic', ifelse(model_data==4, 'Dose Response', ifelse(model_data==5, 'Waning Immunity', NA))))))) %>% 
+  mutate(model_data2 = factor(model_data2, levels(model_data2)[c(3, 2, 1, 4, 5)]))
 # vs. noise
-d5 <- d4 %>% mutate(noisecode2 = as.factor(ifelse(noisecode==1, 'None', ifelse(noisecode==2, "Poisson", ifelse(noisecode==3, "Normal", NA))))) %>% mutate(noisecode2 = factor(noisecode2, levels(noisecode2)[c(1, 3, 2)])) %>% mutate(modChoiceID = paste0(model_data, pois_data, norm_data, model_fit, epidemic, informed))
+d5 <- d4 %>% 
+  mutate(noisecode2 = as.factor(ifelse(noisecode==1, 'None', ifelse(noisecode==2, "Poisson", ifelse(noisecode==3, "Normal", NA))))) %>% 
+  mutate(noisecode2 = factor(noisecode2, levels(noisecode2)[c(1, 3, 2)])) %>% 
+  mutate(modChoiceID = paste0(model_data, pois_data, norm_data, model_fit, epidemic, informed))
 
 #### 10/17/15: labeller expressions for parameters ##########################################
-d6 <- d5  %>% mutate(param_expr = ifelse(parameter == "beta_i", "beta[I]", ifelse(parameter == "beta_w", "beta[W]", as.character(parameter)))) %>% mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k")))
+d6 <- d5  %>% mutate(param_expr = ifelse(parameter == "beta_i", "beta[I]", 
+                                         ifelse(parameter == "beta_w", "beta[W]", 
+                                                ifelse(parameter == "R_0", "R[0]", as.character(parameter))))) %>% 
+  mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k", "R[0]")))
 
 ### 8/30/15: generate summaries for simulated data ##########################################
 #1) Compare summaries across parameters
-param.summ <- d2 %>% group_by(parameter) %>% summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3))
-fitmodel.summ <- d2 %>% group_by(model_fit) %>% summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% mutate(modelname = c('exponential', 'gamma', 'asymptomatic', 'dose response', 'waning'))
-param_fitmodel.summ <- d2 %>% group_by(parameter, model_fit) %>% summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Waning'))
+param.summ <- d2 %>% 
+  group_by(parameter) %>% 
+  summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3))
+
+fitmodel.summ <- d2 %>% 
+  group_by(model_fit) %>% 
+  summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% 
+  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Waning'))
+
+param_fitmodel.summ <- d2 %>% 
+  group_by(parameter, model_fit) %>% 
+  summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% 
+  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Waning'))
 
 # 2) quantify parameter estimate deviations
-beta_k_deviations <- d5 %>% filter(parameter == 'beta_i' | parameter == 'k') %>% group_by(parameter, model_fit) %>% summarise(mindev = min(perc_dev_true), maxdev = max(perc_dev_true), q10 = quantile(perc_dev_true, probs=.1), q90 = quantile(perc_dev_true, probs=.9))
+beta_k_deviations <- d5 %>% 
+  filter(parameter == 'beta_i' | parameter == 'k') %>% 
+  group_by(parameter, model_fit) %>% 
+  summarise(mindev = min(perc_dev_true), maxdev = max(perc_dev_true), q10 = quantile(perc_dev_true, probs=.1), q90 = quantile(perc_dev_true, probs=.9))
 beta_M3 <- d5 %>% filter(parameter == 'beta_i' & model_fit == 3)
 k_M2 <- d5 %>% filter(parameter == 'k' & model_fit == 2)
 k_M5 <- d5 %>% filter(parameter =='k' & model_fit == 5)
 
 ## export param_est_summaries ################################
-setwd("../param_est_summaries/")
+setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
+setwd("./JTB_submission2_data/")
 write.csv(param.summ, 'estimate_summary_by_parameters.csv', row.names=F)
 write.csv(fitmodel.summ, 'estimate_summary_by_fittingmodel.csv', row.names=F)
 write.csv(param_fitmodel.summ, 'estimate_summary_by_parameters_and_fittingmodel.csv', row.names=F)
 write.csv(param.summ.Ang, 'estimate_summary_Angola_by_parameters.csv', row.names=F)
-# 1/26/16, 9:50 pm
+# 8/8/16
 
 #### export cleaned 100d_3y data ################################
-setwd("../")
 write_csv(d.Ang.cl, "param_est_Angola.csv")
 write_csv(d6, "param_est_100d_3y.csv") 
-# 1/26/16, 9:50 pm
+# 8/8/16
 
