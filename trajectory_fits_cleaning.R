@@ -34,8 +34,12 @@ for (i in 1:length(fnames100)){
   fits100 <- cleanData(dummyfile, fits100)
 }
 
+finalDat <- fits100 %>%
+  mutate(generating_model = ifelse(generating_model == "Waning", "Waning Immunity", generating_model)) %>%
+  mutate(fitting_model = ifelse(fitting_model == "Waning", "Waning Immunity", fitting_model))
+
 ## export trajectories - data combined ################################
 setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
 setwd("./JTB_submission2_data/")
-write_csv(fits100, "trajectory_fits_100d.csv") 
+write_csv(finalDat, "trajectory_fits_100d.csv") 
 # 8/8/16

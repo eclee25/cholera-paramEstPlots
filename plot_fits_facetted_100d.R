@@ -18,6 +18,9 @@ require(tidyr)
 require(dplyr)
 require(readr)
 
+#### set these ################################
+ext <- "png"
+
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
 sz <- 1.25; szP <- 1.75; textsz <- 14
@@ -76,8 +79,8 @@ pltFunc <- function(dataset){
 for (starts in starting.order) {
   fitP.full <- pltFunc(fullD %>% filter(starting == starts))
   fitP.Ns <- pltFunc(fullD %>% filter(starting == starts & noise != "poisson"))
-  ggsave(sprintf("allFits_100d_%sStarting.pdf", starts), fitP.full, width = w, height = h, dpi = dp)
-  ggsave(sprintf("noneNormFits_100d_%sStarting.pdf", starts), fitP.Ns, width = w, height = h, dpi = dp)
+  ggsave(sprintf("allFits_100d_%sStarting.%s", starts, ext), fitP.full, width = w, height = h, dpi = dp)
+#   ggsave(sprintf("noneNormFits_100d_%sStarting.%s", starts, ext), fitP.Ns, width = w, height = h, dpi = dp)
 } 
 # exported 8/8/16
 
