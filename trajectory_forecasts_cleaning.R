@@ -38,7 +38,10 @@ for (i in 1:length(fnames)){
 
 #### prepare forecast trajectory data for plotting ################################
 dat2 <- tbl_df(forecasts) %>%
-  rename(forecasting_model = fitting_model) 
+  rename(forecasting_model = fitting_model) %>%
+  mutate(generating_model = ifelse(generating_model == "Waning", "Waning Immunity", generating_model)) %>%
+  mutate(forecasting_model = ifelse(forecasting_model == "Waning", "Waning Immunity", forecasting_model))
+
 # forecast data only
 foreDat <- dat2 %>% 
   filter(forecasting_model != "True Trajectory" & forecasting_model != "Observed Data")

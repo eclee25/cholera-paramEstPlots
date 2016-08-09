@@ -30,6 +30,7 @@ model.colors2 <- c('#00FF00', '#800000', '#FF8C00', '#DA70D6') # exponential, as
 
 w <- 9; h <- 8
 lt <- 2 # line type
+ext <- "pdf"
 
 ####### plot beta_w vs xi estimates (100d & 3y) ######################################################
 setwd("../figures")
@@ -47,7 +48,7 @@ identif.plot <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   ylab(expression(paste(xi, " estimate"))) +
   xlab(expression(paste(beta[W], " estimate"))) #+
 print(identif.plot)
-ggsave("betaW_xi_scatter.pdf", identif.plot, width=w, height=h)
+ggsave(paste0("betaW_xi_scatter.", ext), identif.plot, width=w, height=h)
 
 identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
@@ -58,7 +59,7 @@ identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   xlab(expression(paste(beta[W], " estimate"))) +
   coord_cartesian(xlim = c(0, 2.5), ylim = c(0, 0.1))
 print(identif.plot.zm)
-ggsave("betaW_xi_scatterZm.pdf", identif.plot.zm, width=w, height=h)
+ggsave(paste0("betaW_xi_scatterZm.", ext), identif.plot.zm, width=w, height=h)
 
 identif.plot.nonoise <- ggplot(identif_bw_xi %>% filter(substring(modChoiceID, 2, 3) == "00"), aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
@@ -69,7 +70,7 @@ identif.plot.nonoise <- ggplot(identif_bw_xi %>% filter(substring(modChoiceID, 2
   xlab(expression(paste(beta[W], " estimate"))) #+
   # coord_cartesian(xlim = c(0, 5), ylim = c(0, 0.1))
 print(identif.plot.nonoise)
-ggsave("betaW_xi_scatter_nonoise.pdf", identif.plot.nonoise, width=w, height=h)
+ggsave(paste0("betaW_xi_scatter_nonoise.", ext), identif.plot.nonoise, width=w, height=h)
 
 ####### rm DR plots ######################################################
 identif_bw_xi_rmDR <- d5 %>% filter(parameter == 'beta_w' | parameter == 'xi') %>% 
@@ -86,6 +87,6 @@ identif.plot.rmDR <- ggplot(identif_bw_xi_rmDR, aes(x = beta_w, y = xi)) +
   ylab(expression(paste(xi, " estimate"))) +
   xlab(expression(paste(beta[W], " estimate"))) #+
 print(identif.plot.rmDR)
-ggsave("betaW_xi_scatter_rmDR.pdf", identif.plot.rmDR, width=w, height=h)
+ggsave(paste0("betaW_xi_scatter_rmDR.", ext), identif.plot.rmDR, width=w, height=h)
 
 # 8/8/16

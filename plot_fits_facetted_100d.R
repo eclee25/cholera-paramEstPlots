@@ -19,7 +19,7 @@ require(dplyr)
 require(readr)
 
 #### set these ################################
-ext <- "png"
+ext <- "pdf"
 
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
