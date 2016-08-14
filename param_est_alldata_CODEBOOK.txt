@@ -33,7 +33,7 @@ k = 1/50000
 1/26/16: Replace 3 year parameter estimate data with new copies from Marisa. The new data set the model tolerance to 1 when the Gamma model is fitting to Exponential model data. Still, there were errors found -- nonoise_naive and nonoise_informed both have informed = 1 in the generated data. Figures not replotted. See email subject: "cholera hangout notes - 1/22/16".
 1/27/16: New param_est_100d_3y.csv generated. Figures replotted.
 8/8/16: Models rerun by Marisa and organized in to folders (JTB_submission2_data/). New derived data generated in that same folder.
-
+8/14/16: Models rerun by Marisa such that the Asymptomatic weighted average of alpha actually equals 1/365 (alpha_S = 1/(2*365), alpha_A = 9/(8*365))
 
 
 

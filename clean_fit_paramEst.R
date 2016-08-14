@@ -151,5 +151,5 @@ write.csv(param.summ.Ang, 'estimate_summary_Angola_by_parameters.csv', row.names
 #### export cleaned 100d_3y data ################################
 write_csv(d.Ang.cl, "param_est_Angola.csv")
 write_csv(d6, "param_est_100d_3y.csv") 
-# 8/8/16
+# 8/14/16
 

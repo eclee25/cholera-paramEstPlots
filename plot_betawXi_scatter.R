@@ -54,9 +54,10 @@ identif.plot.zm <- ggplot(identif_bw_xi, aes(x = beta_w, y = xi)) +
   geom_point(aes(color = model_fit2), size = 3) + 
   scale_colour_manual(values=model.colors, name='fitting') +
   theme_bw(base_size = 18, base_family = "") +
-  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), panel.background = element_blank()) +
+  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), panel.background = element_blank(), plot.title=element_text(hjust=0)) +
   ylab(expression(paste(xi, " estimate"))) +
   xlab(expression(paste(beta[W], " estimate"))) +
+  ggtitle("C)") +
   coord_cartesian(xlim = c(0, 2.5), ylim = c(0, 0.1))
 print(identif.plot.zm)
 ggsave(paste0("betaW_xi_scatterZm.", ext), identif.plot.zm, width=w, height=h)
@@ -89,4 +90,4 @@ identif.plot.rmDR <- ggplot(identif_bw_xi_rmDR, aes(x = beta_w, y = xi)) +
 print(identif.plot.rmDR)
 ggsave(paste0("betaW_xi_scatter_rmDR.", ext), identif.plot.rmDR, width=w, height=h)
 
-# 8/8/16
+# 8/14/16

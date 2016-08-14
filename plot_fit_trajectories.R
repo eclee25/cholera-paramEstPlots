@@ -20,6 +20,9 @@ require(readr)
 
 #### set these ################################
 ext <- "pdf"
+# add toggle 8/14/16
+settings <- list(fname = "trajectory_fits_100d.csv", length = "100d")
+# settings <- list(fname = "trajectory_fits_3yr.csv", length = "3y")
 
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
@@ -37,7 +40,7 @@ xlabel.sm <- "Time (days)"
 
 #### import data ################################
 setwd("./JTB_submission2_data")
-imported <- read_csv("trajectory_fits_100d.csv", col_types = "ccccid") 
+imported <- read_csv(settings$fname, col_types = "ccccid") 
 
 #### clean data ################################
 fitD <- imported %>%
@@ -79,7 +82,7 @@ pltFunc <- function(dataset){
 for (starts in starting.order) {
   fitP.full <- pltFunc(fullD %>% filter(starting == starts))
   fitP.Ns <- pltFunc(fullD %>% filter(starting == starts & noise != "poisson"))
-  ggsave(sprintf("allFits_100d_%sStarting.%s", starts, ext), fitP.full, width = w, height = h, dpi = dp)
+  ggsave(sprintf("allFits_%s_%sStarting.%s", settings$length, starts, ext), fitP.full, width = w, height = h, dpi = dp)
 #   ggsave(sprintf("noneNormFits_100d_%sStarting.%s", starts, ext), fitP.Ns, width = w, height = h, dpi = dp)
 } 
 # exported 8/8/16
