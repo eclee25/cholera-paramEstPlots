@@ -27,7 +27,7 @@ ext <- "pdf"
 setwd("./JTB_submission2_data")
 dat <- read_csv('param_est_forecasts.csv', col_types = 'iiiiiicddccdddiciccccc') %>% 
   mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k", "R[0]"))) %>%
-  mutate(noisecode2 = factor(noisecode2, levels = c("None", "Poisson", "Normal"))) %>% 
+  mutate(noisecode2 = factor(noisecode2, levels = c("None", "Poisson", "Normal"), labels = c("No Noise", "Poisson Noise", "Normal Noise"))) %>% 
   mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity"))) %>% 
   mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity"))) %>%
   mutate(obsDays = factor(obsDays, levels = c("10", "30", "50")))
@@ -51,10 +51,10 @@ param.plot2 <- ggplot(dat, aes(x=obsDays, y=perc_dev_true, group=obsDays)) +
   geom_hline(yintercept = c(-20, 20), colour = 'black', linetype = lt) +
   stat_summary(aes(group=obsDays), fun.y=median, geom="point", colour = 'black', size=3) +
   theme_bw(base_size=19) +
-  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black')) +
+  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), plot.title=element_text(hjust=0)) +
   ylab(text.ylab2) +
   xlab(text.xlab) +
-  ggtitle('parameter') +
+  ggtitle('A)') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~param_expr, labeller = label_parsed)
 print(param.plot2)
@@ -94,12 +94,12 @@ noise.plot2 <- ggplot(dat, aes(x=obsDays, y=perc_dev_true, group=obsDays)) +
   geom_hline(yintercept = c(-20, 20), colour = 'black', linetype = lt) +
   stat_summary(aes(group=obsDays), fun.y=median, geom="point", colour = 'black', size=3) +
   theme_bw(base_size=18) +
-  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black')) +
+  theme(legend.position = "bottom", legend.key = element_rect(colour = 'black'), plot.title=element_text(hjust=0)) +
   ylab(text.ylab2) +
   xlab(text.xlab) +
-  ggtitle('noise added to simulated data') +
+  ggtitle('B)') +
   coord_cartesian(ylim = c(-100, 300)) +
   facet_grid(~noisecode2)
 ggsave(sprintf("percTrueDev_forecasts_naiveStarting_byNoise.%s", ext), noise.plot2, width=w, height=h)
 
-# exported 8/8/16
+# exported 8/14/16
