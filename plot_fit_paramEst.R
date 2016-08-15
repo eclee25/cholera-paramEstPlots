@@ -14,8 +14,8 @@
 rm(list = ls())
 
 setwd(dirname(sys.frame(1)$ofile)) 
-require(tidyr)
 require(dplyr)
+require(tidyr)
 require(ggplot2)
 require(readr)
 
