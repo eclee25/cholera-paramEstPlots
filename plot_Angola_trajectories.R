@@ -64,10 +64,10 @@ setwd("./figures")
 #### plotting ################################
 pltFunc <- function(dataset){
   dummyP <- ggplot(dataset, aes(x = t, y = fitted.val)) +
-    geom_point(aes(y = true.val, size = as.factor(szP), shape = sh), color = 'black') +
     scale_size_discrete(name = label.tru, labels = c(""), guide = "legend") +
     scale_shape_identity() +
     geom_line(aes(colour = fitting_model), linetype = lty, size = sz, alpha = apha) +
+    geom_point(aes(y = true.val, size = as.factor(szP), shape = sh), color = 'black') +
     scale_colour_manual(name = "fitting model", breaks = levels(fullD$fitting_model), values = model.colors) +
     scale_y_continuous(name = ylabel.sm) +
     xlab(xlabel.sm) +
