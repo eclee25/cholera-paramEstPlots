@@ -22,7 +22,7 @@ require(readr)
 ###### set this! ####################################
 # setEpicode = 1 means 100 day simulations
 # setEpicode = 2 means 3 year simulations
-setEpicode <- 2
+setEpicode <- 1
 ext <- "pdf"
 
 ###### plot settings ####################################
@@ -34,11 +34,11 @@ if (setEpicode == 1){
 
 ###### import data ####################################
 setwd("./JTB_submission2_data")
-d <- read_csv('weekly_param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
+d <- read_csv('weekly_param_est_100d_3y.csv', col_types = 'iiiiiicddcddddcdccccc') %>% 
   mutate(param_expr = factor(param_expr, levels = c("beta[I]", "beta[W]", "alpha", "xi", "k", "R[0]"))) %>%
   mutate(noisecode2 = factor(noisecode2, levels = c("None", "Poisson", "Normal"))) %>% 
-  mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity"))) %>% 
-  mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
+  mutate(model_data2 = factor(model_data2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive"))) %>% 
+  mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")))
 
 #### plotting params #############################################
 ylabels <- paste0(c(0.001, 0.01, 0.1, 1, 10, 100, 1000), "%")
@@ -47,7 +47,7 @@ text.ylab <- "absolute value of deviation from true parameter"
 text.ylab2 <- "percent deviation from true parameter"
 text.ylab3 <- "percentage of estimate relative to true parameter"
 text.xlab <- "fitting model"
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
+model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
 w <- 9; h <- 8
 lt <- 2 # line type
 

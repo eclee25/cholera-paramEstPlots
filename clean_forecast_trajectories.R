@@ -39,8 +39,8 @@ for (i in 1:length(fnames)){
 #### prepare forecast trajectory data for plotting ################################
 dat2 <- tbl_df(forecasts) %>%
   rename(forecasting_model = fitting_model) %>%
-  mutate(generating_model = ifelse(generating_model == "Waning", "Waning Immunity", generating_model)) %>%
-  mutate(forecasting_model = ifelse(forecasting_model == "Waning", "Waning Immunity", forecasting_model))
+  mutate(generating_model = ifelse(generating_model == "Waning", "Progressive", generating_model)) %>%
+  mutate(forecasting_model = ifelse(forecasting_model == "Waning", "Progressive", forecasting_model))
 
 # forecast data only
 foreDat <- dat2 %>% 
@@ -59,4 +59,4 @@ fullDat <- full_join(foreDat, truDat, by = c("generating_model", "noise", "start
 setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
 setwd("./JTB_submission2_data/")
 write_csv(fullDat, "trajectory_forecasts_100d.csv") 
-# 8/8/16
+# 11/5/16

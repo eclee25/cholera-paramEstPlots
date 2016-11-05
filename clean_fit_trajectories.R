@@ -35,8 +35,8 @@ for (i in 1:length(fnames100)){
 }
 
 finalDat <- fits100 %>%
-  mutate(generating_model = ifelse(generating_model == "Waning", "Waning Immunity", generating_model)) %>%
-  mutate(fitting_model = ifelse(fitting_model == "Waning", "Waning Immunity", fitting_model))
+  mutate(generating_model = ifelse(generating_model == "Waning", "Progressive", generating_model)) %>%
+  mutate(fitting_model = ifelse(fitting_model == "Waning", "Progressive", fitting_model))
 
 #### import & clean 3yr trajectory data ################################
 # 8/14/16 added
@@ -51,12 +51,12 @@ for (i in 1:length(fnames3)){
 }
 
 finalDat3 <- fits3 %>%
-  mutate(generating_model = ifelse(generating_model == "Waning", "Waning Immunity", generating_model)) %>%
-  mutate(fitting_model = ifelse(fitting_model == "Waning", "Waning Immunity", fitting_model))
+  mutate(generating_model = ifelse(generating_model == "Waning", "Progressive", generating_model)) %>%
+  mutate(fitting_model = ifelse(fitting_model == "Waning", "Progressive", fitting_model))
 
 ## export trajectories - one file per duration ################################
 setwd(dirname(sys.frame(1)$ofile)) # only works if you source the program
 setwd("./JTB_submission2_data/")
 write_csv(finalDat, "trajectory_fits_100d.csv") 
 write_csv(finalDat3, "trajectory_fits_3yr.csv")
-# 8/14/16
+# 11/5/16 model name

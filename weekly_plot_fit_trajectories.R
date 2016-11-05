@@ -21,15 +21,15 @@ require(readr)
 #### set these ################################
 ext <- "pdf"
 # add toggle 8/14/16
-# settings <- list(fname = "weekly_trajectory_fits_100d.csv", length = "100d")
-settings <- list(fname = "weekly_trajectory_fits_3yr.csv", length = "3y")
+settings <- list(fname = "weekly_trajectory_fits_100d.csv", length = "100d")
+# settings <- list(fname = "weekly_trajectory_fits_3yr.csv", length = "3y")
 
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
 sz <- 1.25; szP <- 1.75; textsz <- 14
 lty <- 1; sh <- 16; apha <- 0.6
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
-model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")
+model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
+model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")
 noise.order <- c("none", "normal", "poisson")
 starting.order <- c("informed", "naive")
 label.tru <- "true data"

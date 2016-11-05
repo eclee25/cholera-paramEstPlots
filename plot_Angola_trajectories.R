@@ -25,8 +25,8 @@ ext <- "pdf"
 w <- 9; h <- 5; dp <- 300
 sz <- 1.25; szP <- 1.75; textsz <- 14
 lty <- 1; sh <- 16; apha <- 0.6
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
-model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")
+model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
+model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")
 starting.order <- c("naive", "informed")
 starting.labels <- c("`Naive' starting parameters", "`Informed' starting parameters")
 label.tru <- "Angola data"
@@ -47,7 +47,7 @@ for (i in 1:length(fnames)){
 #### clean data ################################
 fitD <- fileDat %>%
   filter(fitting_model != "True Data") %>% 
-  mutate(fitting_model = ifelse(fitting_model == "Waning", "Waning Immunity", fitting_model)) %>%
+  mutate(fitting_model = ifelse(fitting_model == "Waning", "Progressive", fitting_model)) %>%
   rename(fitted.val = data) 
 trueD <- fileDat %>%
   filter(fitting_model == "True Data") %>%

@@ -83,12 +83,12 @@ d2$noisecode[which(d2$noise == '01')] <- 3 # normal
 #### data processing: model numbers should be labeled with words ####################################
 # vs. fitting model
 d3 <- d2 %>% 
-  mutate(model_fit2 = as.factor(ifelse(model_fit==1, 'Exponential', ifelse(model_fit==2, 'Gamma', ifelse(model_fit==3, 'Asymptomatic', ifelse(model_fit==4, 'Dose Response', ifelse(model_fit==5, 'Waning Immunity', NA))))))) %>% 
+  mutate(model_fit2 = as.factor(ifelse(model_fit==1, 'Exponential', ifelse(model_fit==2, 'Gamma', ifelse(model_fit==3, 'Asymptomatic', ifelse(model_fit==4, 'Dose Response', ifelse(model_fit==5, 'Progressive', NA))))))) %>% 
   mutate(model_fit2 = factor(model_fit2, levels(model_fit2)[c(3, 2, 1, 4, 5)])) %>% 
   mutate(parameter = factor(parameter, c("beta_i", "beta_w", "alpha", "xi", "k", "R_0"))) 
 # vs. data simulation model
 d4 <- d3 %>% 
-  mutate(model_data2 = as.factor(ifelse(model_data==1, 'Exponential', ifelse(model_data==2, 'Gamma', ifelse(model_data==3, 'Asymptomatic', ifelse(model_data==4, 'Dose Response', ifelse(model_data==5, 'Waning Immunity', NA))))))) %>% 
+  mutate(model_data2 = as.factor(ifelse(model_data==1, 'Exponential', ifelse(model_data==2, 'Gamma', ifelse(model_data==3, 'Asymptomatic', ifelse(model_data==4, 'Dose Response', ifelse(model_data==5, 'Progressive', NA))))))) %>% 
   mutate(model_data2 = factor(model_data2, levels(model_data2)[c(3, 2, 1, 4, 5)]))
 # vs. noise
 d5 <- d4 %>% 
@@ -111,12 +111,12 @@ param.summ <- d2 %>%
 fitmodel.summ <- d2 %>% 
   group_by(model_fit) %>% 
   summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% 
-  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Waning'))
+  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Progressive'))
 
 param_fitmodel.summ <- d2 %>% 
   group_by(parameter, model_fit) %>% 
   summarise(mn.est = signif(mean(estimate), 3), sd.est = signif(sd(estimate), 3), percCV.est = signif(sd.est/mn.est*100, 3), mn.percDev = signif(mean(perc_dev), 3), sd.percDev = signif(sd(perc_dev), 3)) %>% 
-  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Waning'))
+  mutate(modelname = c('Exponential', 'Gamma', 'Asymptomatic', 'Dose Response', 'Progressive'))
 
 # 2) quantify parameter estimate deviations
 beta_k_deviations <- d5 %>% 

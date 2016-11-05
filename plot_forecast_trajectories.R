@@ -20,13 +20,15 @@ require(readr)
 
 #### set these! ################################
 ext <- "pdf"
+starting <- "informed" 
+# starting <- "naive"
 
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
 sz <- 1.25; szP <- 0.5; textsz <- 14
 lty <- 1; sh <- 20; apha <- 0.6
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
-model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")
+model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
+model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")
 ylabel.sm <- "Infection Incidence"
 xlabel.sm <- "Time (days)"
 label.obs <- "observed noisy data"
@@ -53,19 +55,36 @@ pltFunc <- function(dataset){
 }
 
 #### import data ################################
-setwd("./JTB_submission2_data")
-imported <- read_csv("trajectory_forecasts_100d.csv", col_types = "ccccicddd") %>%
-  mutate(generating_model = factor(generating_model, levels = model.order)) %>%
-  mutate(forecasting_model = factor(forecasting_model, levels = model.order)) %>%
-  mutate(obsDays = paste(obsDays, "days"))
+if (starting == "naive"){
+  setwd("./JTB_submission2_data")
+  imported <- read_csv("trajectory_forecasts_100d.csv", col_types = "ccccicddd") %>%
+    mutate(generating_model = factor(generating_model, levels = model.order)) %>%
+    mutate(forecasting_model = factor(forecasting_model, levels = model.order)) %>%
+    mutate(obsDays = paste(obsDays, "days"))
+} else if (starting == "informed"){
+  setwd("./JTB_submission1_data")
+  imported <- read_csv("all_forecast_data.csv", col_types = "cccciddddd") %>% 
+    mutate(generating_model = ifelse(generating_model == "Waning Immunity", "Progressive", generating_model)) %>%
+    mutate(forecasting_model = ifelse(forecasting_model == "Waning Immunity", "Progressive", forecasting_model)) %>%
+    mutate(generating_model = factor(generating_model, levels = model.order)) %>%
+    mutate(forecasting_model = factor(forecasting_model, levels = model.order)) %>%
+    mutate(obsDays = paste(as.character(obsDays), "days"))
+}
 
 #### export plots ################################
-setwd("../figures")
+setwd(dirname(sys.frame(1)$ofile))
+setwd("./figures")
 
+if (starting == "naive"){
 nonoisePlot <- pltFunc(imported %>% filter(noise == "none"))
+ggsave(sprintf("allForecasts_%sStarting_nonoise.%s", starting, ext), nonoisePlot, width = w, height = h, dpi = dp)
 normalPlot <- pltFunc(imported %>% filter(noise == "normal"))
-ggsave(sprintf("allForecasts_naiveStarting_nonoise.%s", ext), nonoisePlot, width = w, height = h, dpi = dp)
-ggsave(sprintf("allForecasts_naiveStarting_norm.%s", ext), normalPlot, width = w, height = h, dpi = dp)
+ggsave(sprintf("allForecasts_%sStarting_norm.%s", starting, ext), normalPlot, width = w, height = h, dpi = dp)
+} else if (starting == "informed"){
+  normalPlot <- pltFunc(imported)
+  ggsave(sprintf("allForecasts_%sStarting_norm.%s", starting, ext), normalPlot, width = w, height = h, dpi = dp)
+}
+
 # saved 8/8/16
 
 

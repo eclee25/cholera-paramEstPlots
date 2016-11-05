@@ -22,11 +22,11 @@ require(readr)
 ##########################################
 setwd("./JTB_submission2_data")
 d5 <- read_csv('param_est_100d_3y.csv', col_types = 'iiiiiicddcdddiciccccc') %>% 
-  mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Waning Immunity")))
+  mutate(model_fit2 = factor(model_fit2, levels = c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")))
 
 #### plotting params #############################################
-model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
-model.colors2 <- c('#00FF00', '#800000', '#FF8C00', '#DA70D6') # exponential, asymptomatic, gamma, waning immunity (green, blue, dark red, orange, purple)
+model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
+model.colors2 <- c('#00FF00', '#800000', '#FF8C00', '#DA70D6') # exponential, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
 
 w <- 9; h <- 8
 lt <- 2 # line type
