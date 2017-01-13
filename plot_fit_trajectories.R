@@ -21,8 +21,8 @@ require(readr)
 #### set these ################################
 ext <- "pdf"
 # add toggle 8/14/16
-settings <- list(fname = "trajectory_fits_100d.csv", length = "100d")
-# settings <- list(fname = "trajectory_fits_3yr.csv", length = "3y")
+# settings <- list(fname = "trajectory_fits_100d.csv", length = "100d")
+settings <- list(fname = "trajectory_fits_3yr.csv", length = "3y")
 
 #### plot formatting ################################
 w <- 8; h <- 9; dp <- 300
@@ -31,6 +31,7 @@ lty <- 1; sh <- 16; apha <- 0.6
 model.colors <- c('#00FF00', '#0000FF', '#800000', '#FF8C00', '#DA70D6') # exponential, dose response, asymptomatic, gamma, Progressive (green, blue, dark red, orange, purple)
 model.order <- c("Exponential", "Dose Response", "Asymptomatic", "Gamma", "Progressive")
 noise.order <- c("none", "normal", "poisson")
+noise.labels <- c("None", "Normal", "Poisson")
 starting.order <- c("informed", "naive")
 label.tru <- "true data"
 ylabel.big <- "simulation model"
@@ -53,7 +54,7 @@ trueD <- imported %>%
 fullD <- full_join(fitD, trueD, by = c("generating_model", "noise", "starting", "t")) %>%
   mutate(fitting_model = factor(fitting_model, levels = model.order)) %>%
   mutate(generating_model = factor(generating_model, levels = model.order)) %>%
-  mutate(noise = factor(noise, levels = noise.order)) %>%
+  mutate(noise = factor(noise, levels = noise.order, labels = noise.labels)) %>%
   mutate(starting = factor(starting, levels = starting.order))
 
 #### plot preparation ################################
